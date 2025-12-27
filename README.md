@@ -17,7 +17,7 @@ nix run .#nvim-minimal
 # or 
 nix run git+https://git.priv.os76.xyz/xeno/os76-nvf.git
 # or 
-nix run github/xenos76/# os76-nvf.git
+nix run github:xenos76/os76-nvf
 ```
 
 ## IDE config
@@ -26,4 +26,6 @@ How to run:
 
 ```shell
 nix run .#nvim-ide
+# or 
+ nix run github:xenos76/os76-nvf#nvim-ide
 ```
