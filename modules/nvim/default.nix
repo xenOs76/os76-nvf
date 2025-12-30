@@ -35,7 +35,7 @@
            [".*/etc/nginx/.*%.conf"] = "nginx",
 
            -- https://zed.dev/docs/languages/helm
-           ["**/templates/**/*.tpl"] = "heml",
+           ["**/templates/**/*.tpl"] = "helm",
            ["**/templates/**/*.yaml"] = "helm",
            ["**/templates/**/*.yml"] = "helm",
            ["**/helmfile.d/**/*.yaml"] = "helm",
@@ -142,7 +142,6 @@
         pem
         promql
         regex
-        ssh-config
         ssh_config
         terraform
         toml
