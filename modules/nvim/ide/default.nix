@@ -10,12 +10,14 @@
       ];
     };
 
+    extraPlugins = import ./extra-plugins.nix {inherit pkgs;};
+
     # spellcheck = {
     #   enable = lib.mkForce true;
     #   programmingWordlist.enable = true;
     # };
 
-    # telescope.enable = true;
+    telescope.enable = true;
     minimap.codewindow.enable = true;
     utility = {
       outline = {
@@ -35,7 +37,9 @@
       helm = {
         enable = true;
         treesitter.enable = true;
-        lsp.enable = true;
+        lsp = {
+          enable = true;
+        };
       };
 
       go = {

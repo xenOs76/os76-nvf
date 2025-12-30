@@ -18,10 +18,54 @@
     #   };
     # };
 
+    # https://github.com/mrjosh/helm-ls
+    helm-ls = {
+      enable = true;
+      # cmd = lib.mkForce ["${lib.getExe pkgs.helm-ls}" "serve"]; # WARN: do not force
+      settings = {
+        "helm-ls" = {
+          filetypes = [
+            "helm"
+            "helmfile"
+          ];
+
+          rootMarkers = ["Chart.yaml"];
+
+          valuesFiles = {
+            mainValuesFile = "values.yaml";
+            lintOverlayValuesFile = "values.lint.yaml";
+            additionalValuesFilesGlobPattern = "values*.yaml";
+          };
+
+          helmLint = {
+            enabled = true;
+            ignoredMessages = {};
+          };
+
+          yamlls = {
+            enabled = true;
+            path = "${lib.getExe pkgs.yaml-language-server}";
+            enabledForFilesGlob = "*.{yaml,yml}";
+            diagnosticsLimit = 50;
+            showDiagnosticsDirectly = true;
+            config = {
+              schemas = {
+                "https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json" = "argocd-application.yaml";
+                "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/virtualservice_v1.json" = "virtualservice.yaml";
+                kubernetes = "templates/**";
+              };
+              completion = true;
+              hover = true;
+            };
+          };
+        };
+      };
+    };
+
+    # https://www.lazyvim.org/extras/lang/go#nvim-lspconfig
     gopls = {
       enable = true;
       #cmd = lib.mkForce ["${pkgs.gopls}/bin/gopls"];
-      # https://www.lazyvim.org/extras/lang/go#nvim-lspconfig
       settings = {
         gopls = {
           codelenses = {

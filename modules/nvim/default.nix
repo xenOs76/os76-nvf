@@ -19,6 +19,32 @@
       style = "frappe";
     };
 
+    luaConfigPre = ''
+      -- https://neovim.io/doc/user/lua.html#vim.filetype.add()
+       vim.filetype.add({
+         extension = {
+           myext = "markdown",
+           tfvars = "terraform",
+         },
+
+         filename = {
+           ["Jenkinsfile"] = "groovy",
+         },
+
+         pattern = {
+           [".*/etc/nginx/.*%.conf"] = "nginx",
+
+           -- https://zed.dev/docs/languages/helm
+           ["**/templates/**/*.tpl"] = "helm",
+           ["**/templates/**/*.yaml"] = "helm",
+           ["**/templates/**/*.yml"] = "helm",
+           ["**/helmfile.d/**/*.yaml"] = "helm",
+           ["**/helmfile.d/**/*.yml"] = "helm",
+           ["**/values*.yaml"] = "helm",
+         },
+       })
+    '';
+
     options = {
       number = true;
       relativenumber = true;
@@ -54,9 +80,80 @@
     snippets.luasnip.enable = true;
     diagnostics.enable = true;
     notify.nvim-notify.enable = true;
-    treesitter.enable = true;
     filetree.neo-tree.enable = true;
     fzf-lua.enable = true;
+
+    treesitter = {
+      enable = true;
+      fold = true;
+      indent.enable = true;
+
+      # https://github.com/nvim-treesitter/nvim-treesitter-context
+      context.enable = true;
+
+      # https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+      textobjects = {enable = true;};
+
+      # https://youtu.be/E4qXZv34NQQ?t=1220
+      mappings = {
+        incrementalSelection = {
+          init = "<Enter>";
+          decrementByNode = "<Backspace>";
+          incrementByNode = "<Enter>";
+          incrementByScope = "grc";
+        };
+      };
+
+      # https://github.com/tree-sitter/tree-sitter/wiki/List-of-parsers
+      grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+        awk
+        bash
+        caddy
+        comment
+        dockerfile
+        editorconfig
+        # fluentbit  # not packaged
+        git_config
+        git_rebase
+        # git_commit # not packaged
+        gitcommit
+        gitattributes
+        gitignore
+        go
+        gotmpl
+        gosum
+        gomod
+        gowork
+        gpg
+        hcl
+        helm
+        ini
+        jinja
+        jinja_inline
+        jq
+        json
+        # json_schema # not packaged
+        lua
+        make
+        mermaid
+        nginx
+        nix
+        passwd
+        pem
+        promql
+        regex
+        ssh_config
+        terraform
+        toml
+        udev
+        vhs
+        vim
+        xml
+        # xquery # not packaged
+        yaml
+        zsh
+      ];
+    };
 
     git = {
       enable = true;
