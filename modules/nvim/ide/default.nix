@@ -27,7 +27,7 @@
         friendly-snippets.enable = true;
         setupOpts = {
           sources = {
-            default = ["lsp" "path" "snippets" "buffer" "snippets" "ripgrep"];
+            default = ["lsp" "path" "snippets" "buffer" "ripgrep"];
           };
 
           cmdline = {
@@ -62,7 +62,12 @@
     };
 
     languages = {
-      lua.enable = true;
+      lua = {
+        enable = true;
+        treesitter.enable = true;
+        lsp.enable = true;
+      };
+
       helm = {
         enable = true;
         treesitter.enable = true;
