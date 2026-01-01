@@ -3,6 +3,9 @@
   nvim-web-devicons.enable = true;
   nvim-cursorline.enable = true;
 
+  # https://gitlab.com/HiPhish/rainbow-delimiters.nvim
+  rainbow-delimiters.enable = true;
+
   # https://github.com/declancm/cinnamon.nvim
   cinnamon-nvim.enable = false;
 

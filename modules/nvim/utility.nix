@@ -5,7 +5,7 @@
   yanky-nvim.enable = false; # needs backend conf
 
   # https://github.com/kylechui/nvim-surround
-  surround.enable = true;
+  #surround.enable = true;
 
   # https://github.com/code-biscuits/nvim-biscuits
   nvim-biscuits.enable = true;

@@ -69,6 +69,24 @@
     visuals = import ./visuals.nix;
     utility = import ./utility.nix;
 
+    # https://github.com/nvim-mini/mini.surround
+    mini.surround = {
+      enable = true;
+      setupOpts = {
+        mappings = {
+          add = "sa"; #-- Add surrounding in Normal and Visual modes
+          delete = "sd"; # -- Delete surrounding
+          find = "sf"; # -- Find surrounding (to the right)
+          find_left = "sF"; #  -- Find surrounding (to the left)
+          highlight = "sh"; # -- Highlight surrounding
+          replace = "sr"; # -- Replace surrounding
+
+          suffix_last = "l"; # -- Suffix to search with "prev" method
+          suffix_next = "n"; # -- Suffix to search with "next" method
+        };
+      };
+    };
+
     terminal = {
       toggleterm = {
         enable = true;
@@ -76,7 +94,17 @@
       };
     };
 
-    autocomplete.nvim-cmp.enable = true;
+    autocomplete = {
+      enableSharedCmpSources = true;
+      nvim-cmp = {
+        enable = true;
+        sources = {
+          buffer = "[Buffer]";
+          path = "[Path]";
+        };
+      };
+    };
+
     snippets.luasnip.enable = true;
     diagnostics.enable = true;
     notify.nvim-notify.enable = true;

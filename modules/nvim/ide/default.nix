@@ -11,14 +11,42 @@
     };
 
     extraPlugins = import ./extra-plugins.nix {inherit pkgs;};
+    # extraLuaFiles = [
+    #   ./lua/blink-cmp.lua
+    # ];
 
     # spellcheck = {
     #   enable = lib.mkForce true;
     #   programmingWordlist.enable = true;
     # };
 
+    autocomplete = {
+      nvim-cmp.enable = lib.mkForce false;
+      blink-cmp = {
+        enable = true;
+        friendly-snippets.enable = true;
+        setupOpts = {
+          sources = {
+            default = ["lsp" "path" "snippets" "buffer" "ripgrep"];
+          };
+
+          cmdline = {
+            keymap = {
+              preset = "default";
+            };
+          };
+        };
+
+        sourcePlugins = {
+          ripgrep.enable = true;
+          spell.enable = true;
+        };
+      };
+    };
+
     telescope.enable = true;
     minimap.codewindow.enable = true;
+
     utility = {
       outline = {
         aerial-nvim.enable = true;
@@ -34,6 +62,12 @@
     };
 
     languages = {
+      lua = {
+        enable = true;
+        treesitter.enable = true;
+        lsp.enable = true;
+      };
+
       helm = {
         enable = true;
         treesitter.enable = true;
