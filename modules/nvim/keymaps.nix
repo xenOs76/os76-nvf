@@ -21,6 +21,14 @@
   }
 
   {
+    key = "<leader>na";
+    mode = ["n"];
+    silent = true;
+    action = "<cmd>AerialToggle!<CR>";
+    desc = "[n]avigation - [A]erial toggle";
+  }
+
+  {
     key = "<leader>qq";
     mode = "n";
     action = "<cmd>qa<CR>";
@@ -133,14 +141,6 @@
     silent = true;
     noremap = true;
     desc = "Gitsigns blame";
-  }
-  {
-    key = "<leader>gl";
-    mode = "n";
-    action = "<cmd>LazyGit<CR>";
-    silent = true;
-    noremap = true;
-    desc = "LazyGit";
   }
   {
     key = "<leader>tt";

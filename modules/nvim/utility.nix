@@ -1,4 +1,4 @@
-{
+{lib, ...}: {
   diffview-nvim.enable = false;
 
   # https://github.com/gbprod/yanky.nvim

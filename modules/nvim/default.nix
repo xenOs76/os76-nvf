@@ -58,7 +58,6 @@
     spellcheck.enable = false;
 
     keymaps = import ./keymaps.nix;
-    mini.icons.enable = true;
     binds.whichKey.enable = true;
 
     statusline.lualine.enable = true;
@@ -67,22 +66,30 @@
 
     ui = import ./ui.nix;
     visuals = import ./visuals.nix;
-    utility = import ./utility.nix;
+    utility = import ./utility.nix {inherit lib;};
 
-    # https://github.com/nvim-mini/mini.surround
-    mini.surround = {
-      enable = true;
-      setupOpts = {
-        mappings = {
-          add = "sa"; #-- Add surrounding in Normal and Visual modes
-          delete = "sd"; # -- Delete surrounding
-          find = "sf"; # -- Find surrounding (to the right)
-          find_left = "sF"; #  -- Find surrounding (to the left)
-          highlight = "sh"; # -- Highlight surrounding
-          replace = "sr"; # -- Replace surrounding
+    mini = {
+      # https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-ai.md
+      ai.enable = true;
 
-          suffix_last = "l"; # -- Suffix to search with "prev" method
-          suffix_next = "n"; # -- Suffix to search with "next" method
+      animate.enable = true;
+      icons.enable = true;
+
+      # https://github.com/nvim-mini/mini.surround
+      surround = {
+        enable = true;
+        setupOpts = {
+          mappings = {
+            add = "sa"; #-- Add surrounding in Normal and Visual modes
+            delete = "sd"; # -- Delete surrounding
+            find = "sf"; # -- Find surrounding (to the right)
+            find_left = "sF"; #  -- Find surrounding (to the left)
+            highlight = "sh"; # -- Highlight surrounding
+            replace = "sr"; # -- Replace surrounding
+
+            suffix_last = "l"; # -- Suffix to search with "prev" method
+            suffix_next = "n"; # -- Suffix to search with "next" method
+          };
         };
       };
     };
@@ -105,8 +112,8 @@
       };
     };
 
-    snippets.luasnip.enable = true;
     diagnostics.enable = true;
+    snippets.luasnip.enable = true;
     notify.nvim-notify.enable = true;
     filetree.neo-tree.enable = true;
     fzf-lua.enable = true;
@@ -202,6 +209,8 @@
       ripgrep
       fzf
       lazygit
+      # opentofu
+      # tflint
 
       # yaml
       vimPlugins.SchemaStore-nvim
