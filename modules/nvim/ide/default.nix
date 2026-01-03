@@ -1,5 +1,8 @@
 {
   pkgs,
+  nixpkgs-terraform,
+  terraformVersion,
+  terraformAutoformat,
   lib,
   ...
 }: {
@@ -11,9 +14,6 @@
     };
 
     extraPlugins = import ./extra-plugins.nix {inherit pkgs;};
-    # extraLuaFiles = [
-    #   ./lua/blink-cmp.lua
-    # ];
 
     # spellcheck = {
     #   enable = lib.mkForce true;
@@ -33,6 +33,17 @@
           cmdline = {
             keymap = {
               preset = "default";
+            };
+            completion = {
+              list = {selection = {preselect = false;};};
+              menu = {
+                auto_show = lib.generators.mkLuaInline ''
+                  function(ctx)
+                    return vim.fn.getcmdtype() == ":"
+                  end
+                '';
+              };
+              ghost_text = {enabled = true;};
             };
           };
         };
@@ -55,6 +66,34 @@
         glow.enable = true;
       };
     };
+
+    # autocmd to disable autoformat via conform-nvim.
+    # It is triggered opening terraform files if
+    # conform-nvim has a corresponding Lua function
+    # that defines the options listed here.
+    # See formatter.nix > conform-nvim > setupOpts >
+    # format_on_save
+    # Refs:
+    # - https://www.lazyvim.org/configuration/tips#disable-autoformat-for-some-buffers
+    # - https://github.com/stevearc/conform.nvim?tab=readme-ov-file#setupopts > format_on_save
+    # - https://github.com/stevearc/conform.nvim/issues/192#issuecomment-2573170631
+    autocmds = [
+      {
+        desc = "disable Terraform autoformat";
+        enable =
+          if terraformAutoformat
+          then false
+          else true;
+        event = ["FileType"];
+        pattern = ["terraform" "terraform-vars"];
+        callback = lib.generators.mkLuaInline ''
+          function()
+            -- print("Terraform: autoformat disabled")
+            vim.b.disable_autoformat=true
+          end
+        '';
+      }
+    ];
 
     formatter = import ./formatter.nix {
       inherit pkgs;
@@ -85,7 +124,10 @@
 
       python = {
         enable = true;
-        format.enable = true;
+        format = {
+          enable = true;
+          type = ["ruff"];
+        };
         treesitter.enable = true;
         lsp = {
           enable = true;
@@ -112,6 +154,12 @@
       gopls
       delve
       golangci-lint
+
+      # python
+      ruff
+
+      # terraform
+      nixpkgs-terraform.packages.${system}."terraform-${terraformVersion}"
     ];
   };
 }

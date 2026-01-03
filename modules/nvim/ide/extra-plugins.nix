@@ -1,4 +1,18 @@
 {pkgs, ...}: {
+  # https://venvselector.homelab.today/
+  # https://github.com/linux-cultist/venv-selector.nvim/
+  venv-selector = {
+    package = pkgs.vimPlugins.venv-selector-nvim;
+    setup = ''
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "python",
+        callback = function()
+        require("venv-selector").setup({ search = {}, options = {} })
+        end,
+      })
+      vim.keymap.set("n", ",v", "<cmd>VenvSelect<cr>", { desc = "Select Python venv" })
+    '';
+  };
   # https://github.com/qvalentin/helm-ls.nvim
   helm-ls-nvim = {
     package = pkgs.vimPlugins.helm-ls-nvim;

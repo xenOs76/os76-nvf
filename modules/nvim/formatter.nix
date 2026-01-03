@@ -32,6 +32,9 @@
         nginxfmt = {
           command = "${lib.getExe nginx-config-formatter}";
         };
+        # terraform_fmt = {
+        #   command = "${lib.getExe opentofu}";
+        # };
       };
 
       formatters_by_ft = {
@@ -39,10 +42,9 @@
         sh = ["shfmt"];
         json = ["fixjson"];
         yaml = ["yamlfmt"];
-        markdown = [
-          "markdownlint-cli2"
-        ];
+        markdown = ["markdownlint-cli2"];
         nginx = ["nginxfmt"];
+        #terraform = ["terraform_fmt"];
       };
     };
   };
