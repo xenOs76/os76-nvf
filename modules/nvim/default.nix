@@ -66,7 +66,7 @@
 
     ui = import ./ui.nix;
     visuals = import ./visuals.nix;
-    utility = import ./utility.nix {inherit lib;};
+    utility = import ./utility.nix;
 
     mini = {
       # https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-ai.md
