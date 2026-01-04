@@ -99,10 +99,10 @@ in {
         desc = "disable Yaml autoformat";
         enable = !yamlAutoformat;
         event = ["FileType"];
-        pattern = ["yaml"];
+        pattern = ["yaml" "helm"];
         callback = lib.generators.mkLuaInline ''
           function()
-            -- print("Yaml: autoformat disabled")
+            -- print("Yaml autoformat disabled")
             vim.b.disable_autoformat=true
           end
         '';

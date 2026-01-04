@@ -50,9 +50,6 @@
         shfmt = {
           command = "${lib.getExe shfmt}";
         };
-        yamlfmt = {
-          command = "${lib.getExe yamlfmt}";
-        };
         nginxfmt = {
           command = "${lib.getExe nginx-config-formatter}";
         };
@@ -67,7 +64,6 @@
         ];
         sh = ["shfmt"];
         json = ["fixjson"];
-        yaml = ["yamlfmt"];
         markdown = [
           "markdownlint-cli2"
         ];
