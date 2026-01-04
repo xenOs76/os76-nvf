@@ -1,5 +1,8 @@
-{pkgs, ...}: {
-  # TODO: add to ide and convert this to minimal
+{
+  pkgs,
+  lib,
+  ...
+}: {
   conform-nvim = {
     enable = true;
     setupOpts = {
@@ -23,12 +26,6 @@
         shfmt = {
           command = "${lib.getExe shfmt}";
         };
-        yamlfmt = {
-          command = "${lib.getExe yamlfmt}";
-          # https://github.com/google/yamlfmt/blob/main/docs/command-usage.md#configuration-flags
-          # https://github.com/google/yamlfmt/blob/main/docs/config-file.md#basic-formatter
-          #args = ["-formatter" "indent=2,include_document_start=true,retain_line_breaks_single=true"];
-        };
         nginxfmt = {
           command = "${lib.getExe nginx-config-formatter}";
         };
@@ -41,7 +38,7 @@
         nix = ["alejandra"];
         sh = ["shfmt"];
         json = ["fixjson"];
-        yaml = ["yamlfmt"];
+        # yaml = ["yamlfmt"]; # minimal only
         markdown = ["markdownlint-cli2"];
         nginx = ["nginxfmt"];
         #terraform = ["terraform_fmt"];

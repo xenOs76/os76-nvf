@@ -229,7 +229,10 @@
         neogit.enable = false;
       };
 
-      formatter = import ./formatter.nix {inherit pkgs;};
+      formatter = import ./formatter.nix {
+        inherit pkgs;
+        inherit lib;
+      };
       lsp = import ./lsp.nix {
         inherit pkgs;
         inherit lib;
