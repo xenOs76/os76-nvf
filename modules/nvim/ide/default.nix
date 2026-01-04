@@ -1,11 +1,15 @@
 {
   pkgs,
+  config,
   nixpkgs-terraform,
-  terraformVersion,
-  terraformAutoformat,
   lib,
   ...
-}: {
+}: let
+  terraformInstall = config.os76NvfCfg.terraformInstall;
+  terraformVersion = config.os76NvfCfg.terraformVersion;
+  terraformAutoformat = config.os76NvfCfg.terraformAutoformat;
+  yamlAutoformat = config.os76NvfCfg.yamlAutoformat;
+in {
   vim = {
     dashboard.startify = {
       customFooter = [
@@ -80,15 +84,25 @@
     autocmds = [
       {
         desc = "disable Terraform autoformat";
-        enable =
-          if terraformAutoformat
-          then false
-          else true;
+        enable = !terraformAutoformat;
         event = ["FileType"];
         pattern = ["terraform" "terraform-vars"];
         callback = lib.generators.mkLuaInline ''
           function()
             -- print("Terraform: autoformat disabled")
+            vim.b.disable_autoformat=true
+          end
+        '';
+      }
+
+      {
+        desc = "disable Yaml autoformat";
+        enable = !yamlAutoformat;
+        event = ["FileType"];
+        pattern = ["yaml"];
+        callback = lib.generators.mkLuaInline ''
+          function()
+            -- print("Yaml: autoformat disabled")
             vim.b.disable_autoformat=true
           end
         '';
@@ -154,12 +168,17 @@
       gopls
       delve
       golangci-lint
+      gotests
 
       # python
       ruff
 
-      # terraform
-      nixpkgs-terraform.packages.${system}."terraform-${terraformVersion}"
+      # terraform (non free)
+      (
+        lib.mkIf
+        terraformInstall
+        nixpkgs-terraform.packages.${system}."terraform-${terraformVersion}"
+      )
     ];
   };
 }
