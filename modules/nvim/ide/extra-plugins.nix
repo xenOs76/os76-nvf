@@ -1,4 +1,10 @@
 {pkgs, ...}: {
+  # https://github.com/buoto/gotests-vim
+  # https://github.com/cweill/gotests
+  gotests-vim = {
+    package = pkgs.vimPlugins.gotests-vim;
+  };
+
   # https://venvselector.homelab.today/
   # https://github.com/linux-cultist/venv-selector.nvim/
   venv-selector = {
@@ -13,6 +19,7 @@
       vim.keymap.set("n", ",v", "<cmd>VenvSelect<cr>", { desc = "Select Python venv" })
     '';
   };
+
   # https://github.com/qvalentin/helm-ls.nvim
   helm-ls-nvim = {
     package = pkgs.vimPlugins.helm-ls-nvim;

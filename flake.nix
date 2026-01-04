@@ -40,9 +40,12 @@
           config.allowUnfree = true;
         };
 
-        # https://github.com/stackbuilders/nixpkgs-terraform/blob/main/versions.json
-        terraformVersion = "1.14";
-        terraformAutoformat = true;
+        os76NvfCfg = {
+          # https://github.com/stackbuilders/nixpkgs-terraform/blob/main/versions.json
+          terraformVersion = "1.14";
+          terraformAutoformat = true;
+          yamlAutoformat = true;
+        };
 
         nvimMinimal = nvf.lib.neovimConfiguration {
           inherit pkgs;
@@ -56,9 +59,10 @@
           inherit pkgs;
           modules = [
             ./modules/nvim/default.nix
+            {inherit os76NvfCfg;}
             ./modules/nvim/ide/default.nix
           ];
-          extraSpecialArgs = {inherit nixpkgs-terraform terraformVersion terraformAutoformat;};
+          extraSpecialArgs = {inherit nixpkgs-terraform;};
         };
       in {
         exportedInputs = inputs;
