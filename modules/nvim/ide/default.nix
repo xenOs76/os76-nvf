@@ -84,10 +84,7 @@ in {
     autocmds = [
       {
         desc = "disable Terraform autoformat";
-        enable =
-          if terraformAutoformat
-          then false
-          else true;
+        enable = !terraformAutoformat;
         event = ["FileType"];
         pattern = ["terraform" "terraform-vars"];
         callback = lib.generators.mkLuaInline ''
@@ -100,10 +97,7 @@ in {
 
       {
         desc = "disable Yaml autoformat";
-        enable =
-          if yamlAutoformat
-          then false
-          else true;
+        enable = !yamlAutoformat;
         event = ["FileType"];
         pattern = ["yaml"];
         callback = lib.generators.mkLuaInline ''
