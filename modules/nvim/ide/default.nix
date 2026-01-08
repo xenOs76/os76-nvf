@@ -102,7 +102,7 @@ in {
         pattern = ["yaml" "helm"];
         callback = lib.generators.mkLuaInline ''
           function()
-            -- print("Yaml autoformat disabled")
+            print("Yaml autoformat disabled")
             vim.b.disable_autoformat=true
           end
         '';

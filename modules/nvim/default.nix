@@ -84,6 +84,7 @@
         shiftwidth = 2;
         wrap = false;
         mouse = "a";
+        winborder = "rounded";
       };
       undoFile.enable = true;
       clipboard.enable = true;
@@ -244,8 +245,6 @@
         ripgrep
         fzf
         lazygit
-        # opentofu
-        # tflint
 
         # yaml
         vimPlugins.SchemaStore-nvim
