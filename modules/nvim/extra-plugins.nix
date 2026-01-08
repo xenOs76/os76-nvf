@@ -2,12 +2,26 @@
   schemastore = {
     package = pkgs.vimPlugins.SchemaStore-nvim;
   };
+
   vim-splunk = {
     package = pkgs.vimPlugins.vim-splunk;
   };
+
   vim-nftables = {
     package = pkgs.vimPlugins.vim-nftables;
   };
+
+  # https://github.com/vladdoster/remember.nvim/blob/master/doc/remember.txt
+  remember-nvim = {
+    package = pkgs.vimPlugins.remember-nvim;
+    setup = ''
+      require("remember").setup {
+          -- for example, open_folds is off by default, use this to turn it on
+          open_folds = true,
+      }
+    '';
+  };
+
   tiny-inline-diagnostic = {
     package = pkgs.vimPlugins.tiny-inline-diagnostic-nvim;
     setup = ''

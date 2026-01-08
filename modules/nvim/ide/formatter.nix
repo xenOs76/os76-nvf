@@ -26,14 +26,8 @@
         gofumpt = {
           command = "${lib.getExe gofumpt}";
         };
-        black = {
-          command = "${lib.getExe black}";
-        };
         markdownlint-cli2 = {
           command = "${lib.getExe markdownlint-cli2}";
-        };
-        isort = {
-          command = "${lib.getExe isort}";
         };
         alejandra = {
           command = "${lib.getExe alejandra}";
@@ -58,10 +52,6 @@
       formatters_by_ft = {
         lua = ["stylua"];
         nix = ["alejandra"];
-        python = [
-          "black"
-          "isort"
-        ];
         sh = ["shfmt"];
         json = ["fixjson"];
         markdown = [
