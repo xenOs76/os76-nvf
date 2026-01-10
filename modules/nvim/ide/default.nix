@@ -131,7 +131,10 @@ in {
 
       go = {
         enable = true;
-        format.enable = true;
+        format = {
+          enable = false; # WARN using multiple Conform formatters instead
+          type = ["gofumpt"];
+        };
         treesitter.enable = true;
         lsp.enable = true;
       };
@@ -165,6 +168,8 @@ in {
     extraPackages = with pkgs; [
       # go
       go
+      gofumpt
+      gotools
       gopls
       delve
       golangci-lint
