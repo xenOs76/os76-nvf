@@ -75,6 +75,22 @@
              ["**/values*.yaml"] = "helm",
            },
          })
+
+        -- split window border
+        --
+        -- https://www.reddit.com/r/neovim/comments/1dtcplk/winseparator_and_vertsplit/
+        -- https://github.com/catppuccin/nvim/discussions/676
+        -- https://catppuccin.com/palette/
+        --
+        -- vim.api.nvim_set_hl(0, 'WinSeparator', { fg = '#40a02b'})
+        -- or
+        require("catppuccin").setup {
+            custom_highlights = function(colors)
+                return {
+                    WinSeparator = { fg = colors.mauve },
+                }
+            end
+        }
       '';
 
       options = {
