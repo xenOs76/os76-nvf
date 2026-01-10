@@ -1,5 +1,19 @@
 ## Unreleased
 
+## 0.0.8 (2026-01-10)
+
+    Update Go formatter configuration and Neovim theme (#8)
+    
+    * chore: set WinSeparator
+    
+    define visible border for split windows according to theme colors
+    
+    * refactor: format support for go language
+    
+    disable Nvf's go language support since it allowed only one formatter,
+    set Conform to use gofumpt and goimports as formatters for go FT,
+    remove global autoformat disable check.
+
 ## 0.0.7 (2026-01-08)
 
 ### Refactor
@@ -30,8 +44,8 @@
 
 ### Refactor
 
-- autocomplete for minimal setup, switch to mini surround
-  feat: enable rainbow brackets
+- autocomplete for minimal setup, switch to mini surround feat: enable rainbow
+  brackets
 
 ## 0.0.2 (2025-12-30)
 
