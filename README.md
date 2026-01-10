@@ -1,11 +1,5 @@
 # os76-nvf
 
-## Use Cachix
-
-```shell
-cachix use nvf
-```
-
 ## Minimal config
 
 How to run:

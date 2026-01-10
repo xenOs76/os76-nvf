@@ -1,10 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   # https://devenv.sh/basics/
   env.GREET = "devenv";
 
@@ -33,15 +27,11 @@
 
   # https://devenv.sh/git-hooks/
   git-hooks = {
-    excludes = [
-      "devenv.nix"
-    ];
     hooks = {
       alejandra.enable = true;
       commitizen.enable = true;
       comrak.enable = true;
       deadnix.enable = true;
-      detect-aws-credentials.enable = true;
       detect-private-keys.enable = true;
       flake-checker.enable = true;
       gitlint.enable = true;

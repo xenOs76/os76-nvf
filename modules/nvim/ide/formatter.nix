@@ -6,14 +6,11 @@
   conform-nvim = {
     enable = true;
     setupOpts = {
-      # format_on_save = {
-      #   timeout_ms = 500;
-      #   lsp_fallback = true;
-      # };
       format_on_save = lib.generators.mkLuaInline ''
         function(bufnr)
             -- Check global or buffer-local variable
-            if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+            -- if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+            if vim.b[bufnr].disable_autoformat then
               return
             end
             return { timeout_ms = 500, lsp_format = "fallback" }
