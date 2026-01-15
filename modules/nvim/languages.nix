@@ -25,12 +25,16 @@
   markdown = {
     enable = true;
     extensions = {
-      # TODO: add keymaps for preview
       # https://github.com/OXY2DEV/markview.nvim
-      markview-nvim = {enable = true;};
+      markview-nvim = {
+        enable = true;
+        setupOpts = {
+          preview = {enable = false;};
+        };
+      };
 
       # https://github.com/MeanderingProgrammer/render-markdown.nvim
-      render-markdown-nvim = {enable = true;};
+      render-markdown-nvim = {enable = false;};
     };
     format.enable = true;
     treesitter.enable = true;
