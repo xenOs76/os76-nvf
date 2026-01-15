@@ -25,7 +25,6 @@
   markdown = {
     enable = true;
     extensions = {
-      # TODO: add keymaps for preview
       # https://github.com/OXY2DEV/markview.nvim
       markview-nvim = {
         enable = true;
