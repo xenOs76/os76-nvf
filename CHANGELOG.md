@@ -1,4 +1,14 @@
-## Unreleased
+## 0.0.9 (2026-01-15)
+
+### Refactor
+
+    New Features
+        Added keyboard shortcut to toggle inline code hints/biscuits.
+        Added keyboard shortcut to toggle Markdown preview split.
+    
+    Configuration
+        Markdown preview now disabled by default.
+        Markdown extension settings updated to use a structured configuration (preview explicitly turned off).
 
 ## 0.0.8 (2026-01-10)
 
