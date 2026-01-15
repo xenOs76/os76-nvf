@@ -195,4 +195,22 @@
     noremap = true;
     desc = "Don't";
   }
+
+  {
+    key = "<leader>tb";
+    mode = ["n"];
+    action = ":lua require('nvim-biscuits').toggle_biscuits()<CR>";
+    silent = true;
+    noremap = true;
+    desc = "[T]oggle Nvim [B]iscuits";
+  }
+
+  {
+    key = "<leader>mp";
+    mode = ["n"];
+    action = "<CMD>Markview splitToggle<CR>";
+    silent = true;
+    noremap = true;
+    desc = "[M]arkview - toggle split [p]review";
+  }
 ]
