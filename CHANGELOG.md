@@ -1,3 +1,17 @@
+## 0.0.10 (2026-01-21)
+
+### Refactor
+
+    New Features:
+        Enhanced diagnostics and lint integration across Go, Terraform, Python, Shell
+        and YAML. Per-filetype diagnostic toggling for shell and other filetypes
+        (automatic enable/disable). Added inline diagnostic display with a new keyboard
+        shortcut to toggle visibility. UI improvements: cursorline highlighting
+        enhancements.
+    
+    Bug Fixes:
+        Disabled high-CPU Bash language features to improve performance.
+
 ## 0.0.9 (2026-01-15)
 
 ### Refactor
