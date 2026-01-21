@@ -16,10 +16,10 @@
 
   bash = {
     enable = true;
-    format.enable = true;
+    format.enable = false; # managed via Conform formatters
     treesitter.enable = true;
     extraDiagnostics.enable = true;
-    lsp.enable = true;
+    lsp.enable = false; # WARN: high CPU usage
   };
 
   markdown = {

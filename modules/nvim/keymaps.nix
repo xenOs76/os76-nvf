@@ -206,6 +206,15 @@
   }
 
   {
+    key = "<leader>td";
+    mode = ["n"];
+    action = "<CMD>TinyInlineDiag toggle<CR>";
+    silent = true;
+    noremap = true;
+    desc = "[T]oggle tiny-inline-[d]iagnostics";
+  }
+
+  {
     key = "<leader>mp";
     mode = ["n"];
     action = "<CMD>Markview splitToggle<CR>";
