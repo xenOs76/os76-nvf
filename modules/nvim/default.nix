@@ -107,14 +107,24 @@
 
       autocmds = [
         {
-          desc = "Enable Neovim diagnostics for shell files";
+          desc = "Enable Neovim diagnostics virtual_text for shell files";
           enable = true;
-          event = ["FileType"];
-          pattern = ["sh"];
+          event = ["BufEnter" "BufWinEnter"];
+          pattern = ["*.sh"];
           callback = lib.generators.mkLuaInline ''
             function()
-              -- print("Enable Neovim diagnostics for bash script")
               vim.diagnostic.config({ virtual_text = true })
+            end
+          '';
+        }
+        {
+          desc = "Disable Neovim diagnostics virtual_text when leaving shell files";
+          enable = true;
+          event = ["BufLeave"];
+          pattern = ["*.sh"];
+          callback = lib.generators.mkLuaInline ''
+            function()
+              vim.diagnostic.config({ virtual_text = false })
             end
           '';
         }
@@ -192,6 +202,7 @@
           virtual_lines = false;
           virtual_text = false;
         };
+
         nvim-lint = {
           enable = true;
           # https://github.com/mfussenegger/nvim-lint?tab=readme-ov-file#available-linters
