@@ -211,7 +211,7 @@
     action = "<CMD>TinyInlineDiag toggle<CR>";
     silent = true;
     noremap = true;
-    desc = "[T]oggle tini-inline-[d]iagnostics";
+    desc = "[T]oggle tiny-inline-[d]iagnostics";
   }
 
   {
