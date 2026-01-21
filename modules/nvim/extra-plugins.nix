@@ -22,6 +22,7 @@
     '';
   };
 
+  # https://github.com/rachartier/tiny-inline-diagnostic.nvim
   tiny-inline-diagnostic = {
     package = pkgs.vimPlugins.tiny-inline-diagnostic-nvim;
     setup = ''
@@ -36,7 +37,10 @@
               virt_texts = { priority = 2048 },
       })
 
-       vim.diagnostic.config({ virtual_text = false })
+      -- disable Neovim diagnostic
+      vim.diagnostic.config({ virtual_lines = false })
+      vim.diagnostic.config({ virtual_text = false })
+      vim.diagnostic.config({ underline = false })
     '';
   };
 }

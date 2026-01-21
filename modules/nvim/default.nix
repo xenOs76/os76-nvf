@@ -101,7 +101,25 @@
         wrap = false;
         mouse = "a";
         winborder = "rounded";
+        cursorline = true;
+        cursorlineopt = "number";
       };
+
+      autocmds = [
+        {
+          desc = "Enable Neovim diagnostics for shell files";
+          enable = true;
+          event = ["FileType"];
+          pattern = ["sh"];
+          callback = lib.generators.mkLuaInline ''
+            function()
+              -- print("Enable Neovim diagnostics for bash script")
+              vim.diagnostic.config({ virtual_text = true })
+            end
+          '';
+        }
+      ];
+
       undoFile.enable = true;
       clipboard.enable = true;
       spellcheck.enable = false;
@@ -161,11 +179,44 @@
         };
       };
 
-      diagnostics.enable = true;
       snippets.luasnip.enable = true;
       notify.nvim-notify.enable = true;
       filetree.neo-tree.enable = true;
       fzf-lua.enable = true;
+
+      diagnostics = {
+        enable = true;
+        config = {
+          # disabled: see tiny-inline-diagnostic for more
+          underline = false;
+          virtual_lines = false;
+          virtual_text = false;
+        };
+        nvim-lint = {
+          enable = true;
+          # https://github.com/mfussenegger/nvim-lint?tab=readme-ov-file#available-linters
+          linters_by_ft = {
+            yaml = ["yamllint"];
+            terraform = ["tflint"];
+            sh = ["shellcheck"];
+            go = ["golangcilint"];
+          };
+          linters = {
+            golangcilint = {
+              cmd = lib.getExe pkgs.golangci-lint;
+            };
+            tflint = {
+              cmd = lib.getExe pkgs.tflint;
+            };
+            yamllint = {
+              cmd = lib.getExe pkgs.yamllint;
+            };
+            shellcheck = {
+              cmd = lib.getExe pkgs.shellcheck;
+            };
+          };
+        };
+      };
 
       treesitter = {
         enable = true;

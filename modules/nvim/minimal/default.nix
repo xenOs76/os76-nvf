@@ -1,9 +1,51 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   vim = {
     dashboard.startify = {
       customFooter = [
         " Os76-Nvf - Minimal config "
       ];
+    };
+
+    autocmds = [
+      {
+        desc = "Enable Neovim diagnostics";
+        enable = true;
+        event = ["FileType"];
+        pattern = ["go" "terraform" "terraform-vars" "python"];
+        callback = lib.generators.mkLuaInline ''
+          function()
+            -- print("Enable Neovim diagnostics")
+            vim.diagnostic.config({ virtual_text = true })
+          end
+        '';
+      }
+    ];
+
+    diagnostics = {
+      nvim-lint = {
+        enable = true;
+        # https://github.com/mfussenegger/nvim-lint?tab=readme-ov-file#available-linters
+        linters_by_ft = {
+          terraform = ["tflint"];
+          go = ["golangcilint"];
+          python = ["ruff"];
+        };
+        linters = {
+          golangcilint = {
+            cmd = lib.getExe pkgs.golangci-lint;
+          };
+          tflint = {
+            cmd = lib.getExe pkgs.tflint;
+          };
+          ruff = {
+            cmd = lib.getExe pkgs.ruff;
+          };
+        };
+      };
     };
 
     formatter.conform-nvim = {
@@ -34,6 +76,7 @@
     extraPackages = with pkgs; [
       # terraform
       opentofu
+      tflint
 
       # python
       ruff
