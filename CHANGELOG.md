@@ -1,6 +1,14 @@
-## 0.0.10 (2026-01-21)
+## 0.0.11 (2026-02-24)
 
-### Refactor
+    New Features
+        Added vim-marks plugin for bookmark and mark management in Neovim.
+        Added configurable YAML schema support with schemastore integration and custom schema definitions for improved IDE functionality.
+        Added LSP buffer formatting keybinding.
+    
+    Improvements
+        Enhanced command-line argument forwarding in IDE scripts.
+
+## 0.0.10 (2026-01-21)
 
     New Features:
         Enhanced diagnostics and lint integration across Go, Terraform, Python, Shell
@@ -13,8 +21,6 @@
         Disabled high-CPU Bash language features to improve performance.
 
 ## 0.0.9 (2026-01-15)
-
-### Refactor
 
     New Features
         Added keyboard shortcut to toggle inline code hints/biscuits.
