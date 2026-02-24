@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
   enable = true;
@@ -49,13 +50,18 @@
             diagnosticsLimit = 50;
             showDiagnosticsDirectly = true;
             config = {
-              schemas = {
-                "https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/argoproj.io/application_v1alpha1.json" = "argocd-application.yaml";
-                "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/virtualservice_v1.json" = "virtualservice.yaml";
-                kubernetes = "templates/**";
+              schemas = config.os76NvfCfg.yamlSchemas;
+              schemaStore = {
+                enable = false;
+                url = "";
+              };
+              kubernetesCRDStore = {
+                enable = true; # does this really work?
+                url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/";
               };
               completion = true;
               hover = true;
+              validate = true;
             };
           };
         };
