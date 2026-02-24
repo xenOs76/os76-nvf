@@ -163,6 +163,7 @@ in {
     lsp = import ./lsp.nix {
       inherit pkgs;
       inherit lib;
+      inherit config;
     };
 
     extraPackages = with pkgs; [

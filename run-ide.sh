@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-nix run ./#nvim-ide
+nix run ./#nvim-ide "$@"

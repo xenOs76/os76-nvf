@@ -222,4 +222,13 @@
     noremap = true;
     desc = "[M]arkview - toggle split [p]review";
   }
+
+  {
+    key = "<leader>fb";
+    mode = ["n"];
+    action = ":lua vim.lsp.buf.format({ async = true })<CR>";
+    silent = true;
+    noremap = true;
+    desc = " LSP [f]ormat buffer";
+  }
 ]

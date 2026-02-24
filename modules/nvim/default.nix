@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
   options.os76NvfCfg = {
@@ -32,6 +33,106 @@
       description = "Enable Conform.nvim to autoformat Yaml files";
       example = false;
     };
+
+    yamlSchemastoreSchemas = lib.mkOption {
+      type = lib.types.str;
+      description = "Json schemas loaded by the Yaml language server via the schemastore plugin. Require function defined in Lua";
+      default = ''
+        require("schemastore").yaml.schemas({
+            extra = {
+
+              {
+                description = "Ansible-lint JSON schema",
+                fileMatch = {"./inventory/*.yaml", "hosts.yml" },
+                name = 'hosts.yml',
+                url = "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json",
+              },
+
+              {
+                description = "HTTPS-Wrench JSON schema",
+                fileMatch = "https-wrench*.yaml",
+                name = "https-wrench.schema.json",
+                url = "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json",
+              },
+
+            },
+          })
+      '';
+      example = ''
+        require("schemastore").yaml.schemas({
+            -- TODO: add additional schemas in the following section
+            extra = {
+              {
+                description = "Ansible-lint JSON schema",
+                fileMatch = {"./inventory/*.yaml", "hosts.yml" },
+                name = 'hosts.yml',
+                url = "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json",
+              },
+            },
+          })
+      '';
+    };
+
+    yamlSchemas = lib.mkOption {
+      type = lib.types.attrs;
+      description = "List of Json schemas that can be used by the Yaml language server";
+      default = {
+        # "kubernetes" = "*.yaml";
+
+        ### Istio ###
+        # Telemetry
+        "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/telemetry.istio.io/telemetry_v1.json" = [
+          "*istio-telemetry.yaml"
+          "istio-telemetry*.yaml"
+        ];
+        # Gateway
+        "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/gateway_v1.json" = [
+          "*istio-gateway.yaml"
+          "istio-gateway*.yaml"
+        ];
+        # VirtualService
+        "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/virtualservice_v1.json" = [
+          "*istio-virtualservice.yaml"
+          "*virtualService.yaml"
+          "*virtualservice.yaml"
+        ];
+        # EnvoyFilter
+        "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/envoyfilter_v1alpha3.json" = [
+          "*istio-envoyfilter.yaml"
+          "envoyfilter-*.yaml"
+        ];
+
+        ### Prometheus ###
+        # ScrapeConfig
+        "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/monitoring.coreos.com/scrapeconfig_v1alpha1.json" = [
+          "*scrapeconfig.yaml"
+          "ScrapeConfig*.yaml"
+        ];
+        # Rule
+        "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/monitoring.coreos.com/prometheusrule_v1.json" = [
+          "*prometheusrule.yaml"
+          "os76-prometheus-resources/templates/*rules.yaml"
+        ];
+
+        ### Argo ###
+        # WorkflowTemplate
+        "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/argoproj.io/workflowtemplate_v1alpha1.json" = [
+          "*argo-workflowtemplate.yaml"
+        ];
+        # ApplicationSet
+        "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/argoproj.io/applicationset_v1alpha1.json" = [
+          "*argo-applicationset.yaml"
+        ];
+        # Application
+        "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/argoproj.io/application_v1alpha1.json" = [
+          "*argo-application.yaml"
+        ];
+      };
+
+      example = {
+        kubernetes = "templates/**";
+      };
+    };
   };
 
   config = {
@@ -55,13 +156,12 @@
         -- https://neovim.io/doc/user/lua.html#vim.filetype.add()
          vim.filetype.add({
            extension = {
-             myext = "markdown",
-             tfvars = "terraform",
+             tfvars = "terraform-vars",
            },
 
-           filename = {
-             ["Jenkinsfile"] = "groovy",
-           },
+           -- filename = {
+           --  ["Jenkinsfile"] = "groovy",
+           -- },
 
            pattern = {
              [".*/etc/nginx/.*%.conf"] = "nginx",
@@ -315,6 +415,7 @@
       lsp = import ./lsp.nix {
         inherit pkgs;
         inherit lib;
+        inherit config;
       };
       languages = import ./languages.nix;
 

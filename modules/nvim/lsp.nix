@@ -1,6 +1,6 @@
 {
-  pkgs,
   lib,
+  config,
   ...
 }: {
   enable = true;
@@ -49,28 +49,7 @@
             enable = false;
             url = "";
           };
-          schemas = lib.generators.mkLuaInline ''
-            require("schemastore").yaml.schemas({
-                -- TODO: add additional schemas in the following section
-                extra = {
-
-                  {
-                    description = "Ansible-lint JSON schema",
-                    fileMatch = {"./inventory/*.yaml", "hosts.yml" },
-                    name = 'hosts.yml',
-                    url = "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json",
-                  },
-
-                  {
-                    description = "HTTPS-Wrench JSON schema",
-                    fileMatch = "https-wrench*.yaml",
-                    name = "https-wrench.schema.json",
-                    url = "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json",
-                  },
-
-                },
-              })
-          '';
+          schemas = lib.generators.mkLuaInline config.os76NvfCfg.yamlSchemastoreSchemas;
         };
 
         nixd = {
