@@ -17,6 +17,12 @@
     };
 
     nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
+
+    gitlineage-nvim = {
+      # url = "github:LionyxML/gitlineage.nvim";
+      url = "github:zenangst/gitlineage.nvim?ref=fix/file-not-tracked-by-git";
+      flake = false;
+    };
   };
 
   nixConfig = {
@@ -35,7 +41,7 @@
   };
 
   outputs = {
-    self,
+    # self,
     nixpkgs,
     flake-utils,
     # home-manager,
@@ -50,6 +56,8 @@
           config.allowUnfree = true;
         };
 
+        gitlineage-repo = inputs.gitlineage-nvim;
+
         os76NvfCfg = {
           # https://github.com/stackbuilders/nixpkgs-terraform/blob/main/versions.json
           terraformVersion = "1.14";
@@ -63,6 +71,9 @@
             ./modules/nvim/default.nix
             ./modules/nvim/minimal/default.nix
           ];
+          extraSpecialArgs = {
+            inherit gitlineage-repo;
+          };
         };
 
         nvimIDE = nvf.lib.neovimConfiguration {
@@ -72,7 +83,10 @@
             {inherit os76NvfCfg;}
             ./modules/nvim/ide/default.nix
           ];
-          extraSpecialArgs = {inherit nixpkgs-terraform;};
+          extraSpecialArgs = {
+            inherit nixpkgs-terraform;
+            inherit gitlineage-repo;
+          };
         };
       in {
         exportedInputs = inputs;
@@ -91,7 +105,6 @@
 
           nvim-ide = {
             type = "app";
-
             program = "${nvimIDE.neovim}/bin/nvim";
           };
 
