@@ -1,7 +1,47 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  gitlineage-repo,
+  ...
+}: let
+  gitlineage-from-source = pkgs.vimUtils.buildVimPlugin {
+    name = "gitlineage-nvim";
+    src = gitlineage-repo;
+  };
+in {
+  # WARN pending issue: https://github.com/LionyxML/gitlineage.nvim/pull/2
+  gitlineage = {
+    package = gitlineage-from-source;
+    setup = ''
+      require("gitlineage").setup({
+          split = "auto",       -- "vertical", "horizontal", or "auto"
+          keymap = "<leader>gh", -- set to nil to disable default keymap
+          keys = {
+              close = "q",       -- set to nil to disable
+              next_commit = "]c", -- set to nil to disable
+              prev_commit = "[c", -- set to nil to disable
+              yank_commit = "yc", -- set to nil to disable
+              open_diff = "<CR>", -- set to nil to disable (requires diffview.nvim)
+          },
+      })
+    '';
+  };
+
   schemastore = {
     package = pkgs.vimPlugins.SchemaStore-nvim;
   };
+
+  # # https://github.com/anasinnyk/nvim-k8s-crd/
+  # nvim-k8s-crd = {
+  #   package = pkgs.vimPlugins.nvim-k8s-crd;
+  #   setup = ''
+  #     require('nvim-k8s-crd').setup({
+  #       cache_dir = "~/.cache/k8s-schemas/",  -- Local directory relative to the current working directory
+  #       k8s = {
+  #         file_mask = "*.yaml",
+  #       },
+  #     })
+  #   '';
+  # };
 
   vim-splunk = {
     package = pkgs.vimPlugins.vim-splunk;
@@ -78,7 +118,7 @@
         -- default virt_text is "".
         bookmark_0 = {
           sign = "⚑",
-          virt_text = "hello world",
+          virt_text = "bookmark",
           -- explicitly prompt for a virtual line annotation when setting a bookmark from this group.
           -- defaults to false.
           annotate = false,
