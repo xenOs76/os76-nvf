@@ -1,5 +1,5 @@
 {
-  diffview-nvim.enable = false;
+  diffview-nvim.enable = true;
 
   # https://github.com/gbprod/yanky.nvim
   yanky-nvim.enable = false; # needs backend conf
