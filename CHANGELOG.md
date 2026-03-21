@@ -1,3 +1,13 @@
+## 0.0.12 (2026-03-21)
+
+    Documentation
+        Added comprehensive Kyverno CRD schemas reference documentation with usage examples
+    
+    New Features
+        Added gitlineage plugin for Neovim commit navigation and history viewing
+        Enabled Diffview plugin for enhanced diff visualization
+        Expanded YAML schema validation with additional schema sources for improved editor support
+
 ## 0.0.11 (2026-02-24)
 
     New Features
