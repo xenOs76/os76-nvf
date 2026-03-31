@@ -1,3 +1,12 @@
+## 0.0.13 (2026-03-31)
+
+    New Features
+        add Dockerls LSP to IDE setup
+    
+    Improvements
+        add JSON schemas for Kyberno ValidatingPolicy CRD and
+        HTTPS-Wrench request configuration
+
 ## 0.0.12 (2026-03-21)
 
     Documentation
