@@ -19,6 +19,18 @@
     #   };
     # };
 
+    # https://www.andersevenrud.net/neovim.github.io/lsp/configurations/dockerls/
+    # https://github.com/rcjsuen/dockerfile-language-server
+    dockerls = {
+      enable = true;
+      cmd = lib.mkForce ["${lib.getExe pkgs. dockerfile-language-server}" "--stdio"];
+      filetypes = ["dockerfile"];
+      rootMarkers = ["Dockerfile"];
+      settings = {
+        "dockerls" = {};
+      };
+    };
+
     # https://github.com/mrjosh/helm-ls
     helm-ls = {
       enable = true;

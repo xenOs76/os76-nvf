@@ -77,9 +77,16 @@
 
       yamlSchemas = lib.mkOption {
         type = lib.types.attrsOf (lib.types.either lib.types.str (lib.types.listOf lib.types.str));
-        description = "List of Json schemas used by the Yaml language server";
+        description = "Mapping of Json schemas used by the Yaml language server";
         default = {
           # "kubernetes" = "*.yaml";
+
+          ### HTTPS Wrench ###
+          # Requests
+          "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json" = [
+            "https-wrench*.yaml"
+            "https-wrench*.yml"
+          ];
 
           ### Github ###
           "https://www.schemastore.org/github-workflow.json" = [
@@ -122,6 +129,12 @@
           "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/monitoring.coreos.com/prometheusrule_v1.json" = [
             "*prometheusrule.yaml"
             "os76-prometheus-resources/templates/*rules.yaml"
+          ];
+
+          ### Kyverno ###
+          # ValidatingPolicy
+          "https://raw.githubusercontent.com/xenOs76/os76-nvf/refs/heads/main/files/CRDs-schemas/kyverno/policies.kyverno.io/validatingpolicy_v1.json" = [
+            "*kyverno-validatingpolicy.yaml"
           ];
 
           ### Argo ###
