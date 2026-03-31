@@ -24,19 +24,10 @@
     dockerls = {
       enable = true;
       cmd = lib.mkForce ["${lib.getExe pkgs. dockerfile-language-server}" "--stdio"];
+      filetypes = ["dockerfile"];
+      rootMarkers = ["Dockerfile"];
       settings = {
-        "dockerls" = {
-          filetypes = [
-            "Dockerfile"
-            "dockerfile"
-          ];
-          rootMarkers = ["Dockerfile"];
-          # root_dir = lib.generators.mkLuaInline ''
-          #   function(startpath)
-          #       return M.search_ancestors(startpath, matcher)
-          #     end
-          # '';
-        };
+        "dockerls" = {};
       };
     };
 
