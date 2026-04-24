@@ -135,10 +135,10 @@
           extraItems =
             map (s: ''
               {
-                description = "${s.description}",
+                description = ${lib.generators.toLua {} s.description},
                 fileMatch = ${lib.generators.toLua {} s.fileMatch},
-                name = "${s.name}",
-                url = "${s.url}",
+                name = ${lib.generators.toLua {} s.name},
+                url = ${lib.generators.toLua {} s.url},
               },
             '')
             config.os76NvfCfg.yamlExtraSchemas;
