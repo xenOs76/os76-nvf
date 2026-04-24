@@ -62,7 +62,7 @@
             diagnosticsLimit = 50;
             showDiagnosticsDirectly = true;
             config = {
-              schemas = config.os76NvfCfg.yamlSchemas;
+              schemas = lib.generators.mkLuaInline config.os76NvfCfg.yamlSchemastoreSchemas;
               schemaStore = {
                 enable = false;
                 url = "";
