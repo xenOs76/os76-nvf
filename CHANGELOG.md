@@ -1,8 +1,22 @@
+## 0.0.16 (2026-04-24)
+
+    Refactor
+
+        Reorganized YAML schema configuration for the development environment.
+        Use Schemastore JSON schemas for both Helm and Yaml LSPs (#15)
+
+## 0.0.15 (2026-04-24)
+
+    chore
+        switch to devenv v2
+
+## 0.0.14 (2026-04-11)
+
 ## 0.0.13 (2026-03-31)
 
     New Features
         add Dockerls LSP to IDE setup
-    
+
     Improvements
         add JSON schemas for Kyberno ValidatingPolicy CRD and
         HTTPS-Wrench request configuration
@@ -11,7 +25,7 @@
 
     Documentation
         Added comprehensive Kyverno CRD schemas reference documentation with usage examples
-    
+
     New Features
         Added gitlineage plugin for Neovim commit navigation and history viewing
         Enabled Diffview plugin for enhanced diff visualization
@@ -23,7 +37,7 @@
         Added vim-marks plugin for bookmark and mark management in Neovim.
         Added configurable YAML schema support with schemastore integration and custom schema definitions for improved IDE functionality.
         Added LSP buffer formatting keybinding.
-    
+
     Improvements
         Enhanced command-line argument forwarding in IDE scripts.
 
@@ -35,7 +49,7 @@
         (automatic enable/disable). Added inline diagnostic display with a new keyboard
         shortcut to toggle visibility. UI improvements: cursorline highlighting
         enhancements.
-    
+
     Bug Fixes:
         Disabled high-CPU Bash language features to improve performance.
 
@@ -44,7 +58,7 @@
     New Features
         Added keyboard shortcut to toggle inline code hints/biscuits.
         Added keyboard shortcut to toggle Markdown preview split.
-    
+
     Configuration
         Markdown preview now disabled by default.
         Markdown extension settings updated to use a structured configuration (preview explicitly turned off).
@@ -52,13 +66,13 @@
 ## 0.0.8 (2026-01-10)
 
     Update Go formatter configuration and Neovim theme (#8)
-    
+
     * chore: set WinSeparator
-    
+
     define visible border for split windows according to theme colors
-    
+
     * refactor: format support for go language
-    
+
     disable Nvf's go language support since it allowed only one formatter,
     set Conform to use gofumpt and goimports as formatters for go FT,
     remove global autoformat disable check.
