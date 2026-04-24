@@ -36,125 +36,119 @@
         example = false;
       };
 
+      yamlExtraSchemas = lib.mkOption {
+        type = lib.types.listOf (lib.types.submodule {
+          options = {
+            name = lib.mkOption {type = lib.types.str;};
+            description = lib.mkOption {type = lib.types.str;};
+            url = lib.mkOption {type = lib.types.str;};
+            fileMatch = lib.mkOption {type = lib.types.either lib.types.str (lib.types.listOf lib.types.str);};
+          };
+        });
+        description = "List of extra JSON schemas for YAML validation";
+        default = [
+          {
+            name = "Ansible-lint";
+            description = "Ansible-lint JSON schema";
+            url = "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json";
+            fileMatch = ["./inventory/*.yaml" "hosts.yml"];
+          }
+          {
+            name = "https-wrench";
+            description = "HTTPS-Wrench JSON schema";
+            url = "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json";
+            fileMatch = ["https-wrench*.yaml" "https-wrench*.yml"];
+          }
+          {
+            name = "Github Workflow";
+            description = "Github Workflow JSON schema";
+            url = "https://www.schemastore.org/github-workflow.json";
+            fileMatch = ["**/.github/workflows/*.yml" "**/.github/workflows/*.yaml" "**/.gitea/workflows/*.yml" "**/.gitea/workflows/*.yaml"];
+          }
+          {
+            name = "Istio Telemetry";
+            description = "Istio Telemetry JSON schema";
+            url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/telemetry.istio.io/telemetry_v1.json";
+            fileMatch = ["*istio-telemetry.yaml" "istio-telemetry*.yaml"];
+          }
+          {
+            name = "Istio Gateway";
+            description = "Istio Gateway JSON schema";
+            url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/gateway_v1.json";
+            fileMatch = ["*istio-gateway.yaml" "istio-gateway*.yaml"];
+          }
+          {
+            name = "Istio VirtualService";
+            description = "Istio VirtualService JSON schema";
+            url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/virtualservice_v1.json";
+            fileMatch = ["*istio-virtualservice.yaml" "*virtualService.yaml" "*virtualservice.yaml"];
+          }
+          {
+            name = "Istio EnvoyFilter";
+            description = "Istio EnvoyFilter JSON schema";
+            url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/envoyfilter_v1alpha3.json";
+            fileMatch = ["*istio-envoyfilter.yaml" "envoyfilter-*.yaml"];
+          }
+          {
+            name = "Prometheus ScrapeConfig";
+            description = "Prometheus ScrapeConfig JSON schema";
+            url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/monitoring.coreos.com/scrapeconfig_v1alpha1.json";
+            fileMatch = ["*scrapeconfig.yaml" "ScrapeConfig*.yaml"];
+          }
+          {
+            name = "Prometheus Rule";
+            description = "Prometheus Rule JSON schema";
+            url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/monitoring.coreos.com/prometheusrule_v1.json";
+            fileMatch = ["*prometheusrule.yaml" "os76-prometheus-resources/templates/*rules.yaml"];
+          }
+          {
+            name = "Kyverno ValidatingPolicy";
+            description = "Kyverno ValidatingPolicy JSON schema";
+            url = "https://raw.githubusercontent.com/xenOs76/os76-nvf/refs/heads/main/files/CRDs-schemas/kyverno/policies.kyverno.io/validatingpolicy_v1.json";
+            fileMatch = ["*kyverno-validatingpolicy.yaml"];
+          }
+          {
+            name = "Argo WorkflowTemplate";
+            description = "Argo WorkflowTemplate JSON schema";
+            url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/argoproj.io/workflowtemplate_v1alpha1.json";
+            fileMatch = ["*argo-workflowtemplate.yaml"];
+          }
+          {
+            name = "Argo ApplicationSet";
+            description = "Argo ApplicationSet JSON schema";
+            url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/argoproj.io/applicationset_v1alpha1.json";
+            fileMatch = ["*argo-applicationset.yaml"];
+          }
+          {
+            name = "Argo Application";
+            description = "Argo Application JSON schema";
+            url = "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/argoproj.io/application_v1alpha1.json";
+            fileMatch = ["*argo-application.yaml"];
+          }
+        ];
+      };
+
       yamlSchemastoreSchemas = lib.mkOption {
         type = lib.types.str;
         description = "Lua expression that returns the YAML schemas table used by the language server via the Schemastore plugin";
-        default = ''
-          require("schemastore").yaml.schemas({
-              extra = {
-
-                {
-                  description = "Ansible-lint JSON schema",
-                  fileMatch = {"./inventory/*.yaml", "hosts.yml" },
-                  name = 'hosts.yml',
-                  url = "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json",
-                },
-
-                {
-                  description = "HTTPS-Wrench JSON schema",
-                  fileMatch = "https-wrench*.yaml",
-                  name = "https-wrench.schema.json",
-                  url = "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json",
-                },
-
+        default = let
+          extraItems =
+            map (s: ''
+              {
+                description = "${s.description}",
+                fileMatch = ${lib.generators.toLua {} s.fileMatch},
+                name = "${s.name}",
+                url = "${s.url}",
               },
-            })
-        '';
-        example = ''
+            '')
+            config.os76NvfCfg.yamlExtraSchemas;
+        in ''
           require("schemastore").yaml.schemas({
-              -- TODO: add additional schemas in the following section
-              extra = {
-                {
-                  description = "Ansible-lint JSON schema",
-                  fileMatch = {"./inventory/*.yaml", "hosts.yml" },
-                  name = 'hosts.yml',
-                  url = "https://raw.githubusercontent.com/ansible/ansible-lint/main/src/ansiblelint/schemas/inventory.json",
-                },
-              },
-            })
+            extra = {
+              ${lib.concatStringsSep "\n" extraItems}
+            },
+          })
         '';
-      };
-
-      yamlSchemas = lib.mkOption {
-        type = lib.types.attrsOf (lib.types.either lib.types.str (lib.types.listOf lib.types.str));
-        description = "Mapping of Json schemas used by the Yaml language server";
-        default = {
-          # "kubernetes" = "*.yaml";
-
-          ### HTTPS Wrench ###
-          # Requests
-          "https://raw.githubusercontent.com/xenOs76/https-wrench/refs/heads/main/https-wrench.schema.json" = [
-            "https-wrench*.yaml"
-            "https-wrench*.yml"
-          ];
-
-          ### Github ###
-          "https://www.schemastore.org/github-workflow.json" = [
-            "**/.github/workflows/*.yml"
-            "**/.github/workflows/*.yaml"
-            "**/.gitea/workflows/*.yml"
-            "**/.gitea/workflows/*.yaml"
-          ];
-
-          ### Istio ###
-          # Telemetry
-          "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/telemetry.istio.io/telemetry_v1.json" = [
-            "*istio-telemetry.yaml"
-            "istio-telemetry*.yaml"
-          ];
-          # Gateway
-          "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/gateway_v1.json" = [
-            "*istio-gateway.yaml"
-            "istio-gateway*.yaml"
-          ];
-          # VirtualService
-          "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/virtualservice_v1.json" = [
-            "*istio-virtualservice.yaml"
-            "*virtualService.yaml"
-            "*virtualservice.yaml"
-          ];
-          # EnvoyFilter
-          "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/networking.istio.io/envoyfilter_v1alpha3.json" = [
-            "*istio-envoyfilter.yaml"
-            "envoyfilter-*.yaml"
-          ];
-
-          ### Prometheus ###
-          # ScrapeConfig
-          "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/monitoring.coreos.com/scrapeconfig_v1alpha1.json" = [
-            "*scrapeconfig.yaml"
-            "ScrapeConfig*.yaml"
-          ];
-          # Rule
-          "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/monitoring.coreos.com/prometheusrule_v1.json" = [
-            "*prometheusrule.yaml"
-            "os76-prometheus-resources/templates/*rules.yaml"
-          ];
-
-          ### Kyverno ###
-          # ValidatingPolicy
-          "https://raw.githubusercontent.com/xenOs76/os76-nvf/refs/heads/main/files/CRDs-schemas/kyverno/policies.kyverno.io/validatingpolicy_v1.json" = [
-            "*kyverno-validatingpolicy.yaml"
-          ];
-
-          ### Argo ###
-          # WorkflowTemplate
-          "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/argoproj.io/workflowtemplate_v1alpha1.json" = [
-            "*argo-workflowtemplate.yaml"
-          ];
-          # ApplicationSet
-          "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/argoproj.io/applicationset_v1alpha1.json" = [
-            "*argo-applicationset.yaml"
-          ];
-          # Application
-          "https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/argoproj.io/application_v1alpha1.json" = [
-            "*argo-application.yaml"
-          ];
-        };
-
-        example = {
-          kubernetes = "templates/**";
-        };
       };
     };
   };

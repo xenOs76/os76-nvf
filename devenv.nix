@@ -30,7 +30,7 @@
     hooks = {
       alejandra.enable = true;
       commitizen.enable = true;
-      comrak.enable = true;
+      comrak.enable = false;
       deadnix.enable = true;
       detect-private-keys.enable = true;
       flake-checker.enable = true;
