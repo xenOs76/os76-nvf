@@ -1,3 +1,143 @@
+## 0.0.17 (2026-06-07)
+
+### Feat
+
+- update nixpkgs to 26.05 and nvf commit hash (#16)
+
+## 0.0.16 (2026-04-24)
+
+### Feat
+
+- use Schemastore JSON schemas for both Helm and Yaml LSPs (#15)
+
+## 0.0.15 (2026-04-24)
+
+## 0.0.14 (2026-04-11)
+
+## 0.0.13 (2026-03-31)
+
+### Feat
+
+- add Dockerls LSP, Kyverno, and HTTPS-Wrench schemas (#14)
+- add Dockerls LSP to IDE setup
+chore: add JSON schemas for Kyberno ValidatingPolicy CRD and
+HTTPS-Wrench request configuration
+
+## 0.0.12 (2026-03-21)
+
+## 0.0.11 (2026-02-24)
+
+## 0.0.10 (2026-01-21)
+
+### Refactor
+
+- migrate bash diagnostics from LSP to nvim-lint (#10)
+
+## 0.0.9 (2026-01-15)
+
+### Refactor
+
+- markdown settings (#9)
+
+## 0.0.8 (2026-01-10)
+
+## 0.0.17 (2026-06-07)
+
+### Feat
+
+- update nixpkgs to 26.05 and nvf commit hash (#16)
+
+## 0.0.16 (2026-04-24)
+
+### Feat
+
+- use Schemastore JSON schemas for both Helm and Yaml LSPs (#15)
+
+## 0.0.15 (2026-04-24)
+
+## 0.0.14 (2026-04-11)
+
+## 0.0.13 (2026-03-31)
+
+### Feat
+
+- add Dockerls LSP, Kyverno, and HTTPS-Wrench schemas (#14)
+- add Dockerls LSP to IDE setup
+chore: add JSON schemas for Kyberno ValidatingPolicy CRD and
+HTTPS-Wrench request configuration
+
+## 0.0.12 (2026-03-21)
+
+## 0.0.11 (2026-02-24)
+
+## 0.0.10 (2026-01-21)
+
+### Refactor
+
+- migrate bash diagnostics from LSP to nvim-lint (#10)
+
+## 0.0.9 (2026-01-15)
+
+### Refactor
+
+- markdown settings (#9)
+
+## 0.0.8 (2026-01-10)
+
+## 0.0.17 (2026-06-07)
+
+### Feat
+
+- update nixpkgs to 26.05 and nvf commit hash (#16)
+
+## 0.0.16 (2026-04-24)
+
+### Feat
+
+- use Schemastore JSON schemas for both Helm and Yaml LSPs (#15)
+
+## 0.0.15 (2026-04-24)
+
+## 0.0.14 (2026-04-11)
+
+## 0.0.13 (2026-03-31)
+
+### Feat
+
+- add Dockerls LSP, Kyverno, and HTTPS-Wrench schemas (#14)
+- add Dockerls LSP to IDE setup
+chore: add JSON schemas for Kyberno ValidatingPolicy CRD and
+HTTPS-Wrench request configuration
+
+## 0.0.12 (2026-03-21)
+
+## 0.0.11 (2026-02-24)
+
+## 0.0.10 (2026-01-21)
+
+### Refactor
+
+- migrate bash diagnostics from LSP to nvim-lint (#10)
+
+## 0.0.9 (2026-01-15)
+
+### Refactor
+
+- markdown settings (#9)
+
+## 0.0.8 (2026-01-10)
+
+## 0.0.17 (2026-06-06)
+
+### Chores
+
+    Updated development dependencies: nixpkgs to version 26.05 and neovim package to latest commit
+    Disabled git hooks in development environment
+
+### Fixes
+
+    Disabled minimap codewindow feature to resolve upstream compatibility issue
+
 ## 0.0.16 (2026-04-24)
 
     Refactor
