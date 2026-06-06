@@ -26,18 +26,18 @@
   '';
 
   # https://devenv.sh/git-hooks/
-  git-hooks = {
-    hooks = {
-      alejandra.enable = true;
-      commitizen.enable = true;
-      comrak.enable = false;
-      deadnix.enable = true;
-      detect-private-keys.enable = true;
-      flake-checker.enable = true;
-      gitlint.enable = true;
-      selene.enable = true;
-      shellcheck.enable = true;
-      trufflehog.enable = true;
-    };
-  };
+  # git-hooks = {
+  #   hooks = {
+  #     alejandra.enable = true;
+  #     commitizen.enable = true;
+  #     comrak.enable = false;
+  #     deadnix.enable = true;
+  #     detect-private-keys.enable = true;
+  #     flake-checker.enable = true;
+  #     gitlint.enable = true;
+  #     selene.enable = true;
+  #     shellcheck.enable = true;
+  #     trufflehog.enable = false;
+  #   };
+  # };
 }
