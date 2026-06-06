@@ -60,7 +60,9 @@ in {
     };
 
     telescope.enable = true;
-    minimap.codewindow.enable = true;
+    # Disabled: codewindow requires nvim-treesitter.ts_utils (removed in treesitter main).
+    # Re-enable when https://github.com/gorbit99/codewindow.nvim/pull/86 merges.
+    minimap.codewindow.enable = false;
 
     utility = {
       outline = {

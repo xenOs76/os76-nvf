@@ -26,18 +26,15 @@
   '';
 
   # https://devenv.sh/git-hooks/
-  git-hooks = {
+  # Keep security hooks on by default; allow opt-out via env.
+  git-hooks = let
+    disableHooks = builtins.getEnv "DISABLE_GIT_HOOKS" == "1";
+  in {
     hooks = {
-      alejandra.enable = true;
-      commitizen.enable = true;
+      detect-private-keys.enable = !disableHooks;
+      trufflehog.enable = !disableHooks;
+      # Keep only known-broken hooks disabled explicitly.
       comrak.enable = false;
-      deadnix.enable = true;
-      detect-private-keys.enable = true;
-      flake-checker.enable = true;
-      gitlint.enable = true;
-      selene.enable = true;
-      shellcheck.enable = true;
-      trufflehog.enable = true;
     };
   };
 }

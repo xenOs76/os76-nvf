@@ -2,7 +2,7 @@
   description = "NVF-based Neovim with minimal + IDE profiles";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -12,7 +12,8 @@
     # };
 
     nvf = {
-      url = "github:NotAShelf/nvf/v0.8";
+      #url = "github:NotAShelf/nvf/v0.8";
+      url = "github:NotAShelf/nvf/0b92b1783de48499303fc6e61478da34ee124482";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
