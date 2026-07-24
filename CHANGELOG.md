@@ -1,131 +1,19 @@
-## 0.0.17 (2026-06-07)
+## 0.0.18 (2026-07-24)
 
 ### Feat
 
-- update nixpkgs to 26.05 and nvf commit hash (#16)
+    Added OpenTofu-based Terraform language-server support and formatting.
+    Added improved TFLint integration with file-specific diagnostics and configuration-aware linting.
+    Added TFLint and OpenTofu to the IDE tooling.
 
-## 0.0.16 (2026-04-24)
+### Fix
 
-### Feat
+    Fixed Terraform diagnostics to display only issues relevant to the current file.
+    Disabled Neovim’s experimental UI2 mode for more reliable command-line popups.
 
-- use Schemastore JSON schemas for both Helm and Yaml LSPs (#15)
+### Chore
 
-## 0.0.15 (2026-04-24)
-
-## 0.0.14 (2026-04-11)
-
-## 0.0.13 (2026-03-31)
-
-### Feat
-
-- add Dockerls LSP, Kyverno, and HTTPS-Wrench schemas (#14)
-- add Dockerls LSP to IDE setup
-chore: add JSON schemas for Kyberno ValidatingPolicy CRD and
-HTTPS-Wrench request configuration
-
-## 0.0.12 (2026-03-21)
-
-## 0.0.11 (2026-02-24)
-
-## 0.0.10 (2026-01-21)
-
-### Refactor
-
-- migrate bash diagnostics from LSP to nvim-lint (#10)
-
-## 0.0.9 (2026-01-15)
-
-### Refactor
-
-- markdown settings (#9)
-
-## 0.0.8 (2026-01-10)
-
-## 0.0.17 (2026-06-07)
-
-### Feat
-
-- update nixpkgs to 26.05 and nvf commit hash (#16)
-
-## 0.0.16 (2026-04-24)
-
-### Feat
-
-- use Schemastore JSON schemas for both Helm and Yaml LSPs (#15)
-
-## 0.0.15 (2026-04-24)
-
-## 0.0.14 (2026-04-11)
-
-## 0.0.13 (2026-03-31)
-
-### Feat
-
-- add Dockerls LSP, Kyverno, and HTTPS-Wrench schemas (#14)
-- add Dockerls LSP to IDE setup
-chore: add JSON schemas for Kyberno ValidatingPolicy CRD and
-HTTPS-Wrench request configuration
-
-## 0.0.12 (2026-03-21)
-
-## 0.0.11 (2026-02-24)
-
-## 0.0.10 (2026-01-21)
-
-### Refactor
-
-- migrate bash diagnostics from LSP to nvim-lint (#10)
-
-## 0.0.9 (2026-01-15)
-
-### Refactor
-
-- markdown settings (#9)
-
-## 0.0.8 (2026-01-10)
-
-## 0.0.17 (2026-06-07)
-
-### Feat
-
-- update nixpkgs to 26.05 and nvf commit hash (#16)
-
-## 0.0.16 (2026-04-24)
-
-### Feat
-
-- use Schemastore JSON schemas for both Helm and Yaml LSPs (#15)
-
-## 0.0.15 (2026-04-24)
-
-## 0.0.14 (2026-04-11)
-
-## 0.0.13 (2026-03-31)
-
-### Feat
-
-- add Dockerls LSP, Kyverno, and HTTPS-Wrench schemas (#14)
-- add Dockerls LSP to IDE setup
-chore: add JSON schemas for Kyberno ValidatingPolicy CRD and
-HTTPS-Wrench request configuration
-
-## 0.0.12 (2026-03-21)
-
-## 0.0.11 (2026-02-24)
-
-## 0.0.10 (2026-01-21)
-
-### Refactor
-
-- migrate bash diagnostics from LSP to nvim-lint (#10)
-
-## 0.0.9 (2026-01-15)
-
-### Refactor
-
-- markdown settings (#9)
-
-## 0.0.8 (2026-01-10)
+    Updated the Neovim framework revision and refreshed editor settings.
 
 ## 0.0.17 (2026-06-06)
 
