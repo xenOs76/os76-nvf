@@ -1,12 +1,9 @@
 {
   pkgs,
   config,
-  nixpkgs-terraform,
   lib,
   ...
 }: let
-  terraformInstall = config.os76NvfCfg.terraformInstall;
-  terraformVersion = config.os76NvfCfg.terraformVersion;
   terraformAutoformat = config.os76NvfCfg.terraformAutoformat;
   yamlAutoformat = config.os76NvfCfg.yamlAutoformat;
 in {
@@ -158,6 +155,11 @@ in {
         treesitter.enable = true;
         lsp = {
           enable = true;
+          servers = ["terraform-ls"]; # override NVF default tofu-ls
+        };
+        format = {
+          enable = true;
+          type = ["opentofu"];
         };
       };
     };
@@ -181,12 +183,9 @@ in {
       # python
       ruff
 
-      # terraform (non free)
-      (
-        lib.mkIf
-        terraformInstall
-        nixpkgs-terraform.packages.${system}."terraform-${terraformVersion}"
-      )
+      # opentofu (CLI for terraform-ls + Conform fmt)
+      opentofu
+      tflint
     ];
   };
 }

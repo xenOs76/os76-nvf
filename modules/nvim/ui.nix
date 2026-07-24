@@ -1,6 +1,10 @@
 {
   borders.enable = true;
 
+  # ui2 tried for Neovim 0.12; kept off — Noice owns floating cmdline popup.
+  # https://neovim.io/doc/user/news-0.12.html (:help ui2)
+  ui2.enable = false;
+
   noice = {
     # https://github.com/folke/noice.nvim
     enable = true;

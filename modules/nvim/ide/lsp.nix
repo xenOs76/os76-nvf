@@ -19,6 +19,16 @@
     #   };
     # };
 
+    # Keep terraform-ls (not tofu-ls); point CLI path at OpenTofu.
+    # https://github.com/hashicorp/terraform-ls/blob/main/docs/SETTINGS.md
+    terraform-ls = {
+      init_options = {
+        terraform = {
+          path = lib.getExe pkgs.opentofu;
+        };
+      };
+    };
+
     # https://www.andersevenrud.net/neovim.github.io/lsp/configurations/dockerls/
     # https://github.com/rcjsuen/dockerfile-language-server
     dockerls = {
