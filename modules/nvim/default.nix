@@ -7,21 +7,6 @@
 }: {
   options = {
     os76NvfCfg = {
-      terraformInstall = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Install terraform (non free) from nixpkgs-terraform in the IDE profile";
-        example = false;
-      };
-
-      # https://github.com/stackbuilders/nixpkgs-terraform/blob/main/versions.json
-      terraformVersion = lib.mkOption {
-        type = lib.types.str;
-        default = "1.14";
-        description = "Terraform version to use for terraform-ls LSP";
-        example = "1.9.8";
-      };
-
       terraformAutoformat = lib.mkOption {
         type = lib.types.bool;
         default = true;
@@ -212,15 +197,16 @@
       '';
 
       options = {
-        number = true;
-        relativenumber = true;
-        expandtab = true;
-        shiftwidth = 2;
-        wrap = false;
-        mouse = "a";
-        winborder = "rounded";
         cursorline = true;
         cursorlineopt = "number";
+        expandtab = true;
+        foldenable = false;
+        mouse = "a";
+        number = true;
+        relativenumber = true;
+        shiftwidth = 2;
+        winborder = "rounded";
+        wrap = false;
       };
 
       autocmds = [
@@ -334,8 +320,47 @@
             golangcilint = {
               cmd = lib.getExe pkgs.golangci-lint;
             };
+            # Stock nvim-lint uses --recursive (full-repo fan-out). Lint one module only.
             tflint = {
               cmd = lib.getExe pkgs.tflint;
+              args = ["--format=json" "--no-parallel-runners"];
+              parser = lib.generators.mkLuaInline ''
+                function(output, bufnr, linter_cwd)
+                  local severity_map = {
+                    warning = vim.diagnostic.severity.WARN,
+                    error = vim.diagnostic.severity.ERROR,
+                    notice = vim.diagnostic.severity.INFO,
+                  }
+                  local decoded = vim.json.decode(output) or {}
+                  local issues = decoded["issues"] or {}
+                  local diagnostics = {}
+                  local buf_abs = vim.fs.normalize(vim.api.nvim_buf_get_name(bufnr))
+
+                  for _, issue in ipairs(issues) do
+                    local issue_path = issue.range.filename
+                    if not vim.startswith(issue_path, "/") then
+                      issue_path = vim.fs.joinpath(linter_cwd or "", issue_path)
+                    end
+                    if vim.fs.normalize(issue_path) == buf_abs then
+                      table.insert(diagnostics, {
+                        lnum = assert(tonumber(issue.range.start.line)) - 1,
+                        end_lnum = assert(tonumber(issue.range["end"].line)) - 1,
+                        col = assert(tonumber(issue.range.start.column)) - 1,
+                        end_col = assert(tonumber(issue.range["end"].column)) - 1,
+                        severity = severity_map[issue.rule.severity],
+                        source = "tflint",
+                        message = string.format(
+                          "%s (%s)\nReference: %s",
+                          issue.message,
+                          issue.rule.name,
+                          issue.rule.link
+                        ),
+                      })
+                    end
+                  end
+                  return diagnostics
+                end
+              '';
             };
             yamllint = {
               cmd = lib.getExe pkgs.yamllint;
@@ -344,6 +369,45 @@
               cmd = lib.getExe pkgs.shellcheck;
             };
           };
+          # tflint: cwd = buffer dir so nested modules work without --recursive
+          lint_function = lib.generators.mkLuaInline ''
+            function(buf)
+              local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+              local linters = require("lint").linters
+              local linters_from_ft = require("lint").linters_by_ft[ft]
+              if linters_from_ft == nil then return end
+
+              for _, name in ipairs(linters_from_ft) do
+                local linter = linters[name]
+                assert(linter, "Linter with name `" .. name .. "` not available")
+                if type(linter) == "function" then
+                  linter = linter()
+                end
+                linter.name = linter.name or name
+
+                local opts = {}
+                if name == "tflint" then
+                  local path = vim.api.nvim_buf_get_name(buf)
+                  if path ~= "" then
+                    opts.cwd = vim.fn.fnamemodify(path, ":h")
+                  end
+                end
+
+                local required = linter.required_files
+                if required == nil then
+                  require("lint").lint(linter, opts)
+                else
+                  for _, fn in ipairs(required) do
+                    local cfg_path = vim.fs.joinpath(opts.cwd or linter.cwd or vim.fn.getcwd(), fn)
+                    if vim.uv.fs_stat(cfg_path) then
+                      require("lint").lint(linter, opts)
+                      break
+                    end
+                  end
+                end
+              end
+            end
+          '';
         };
       };
 
@@ -358,7 +422,10 @@
         # https://github.com/nvim-treesitter/nvim-treesitter-textobjects
         textobjects = {enable = true;};
 
-        # https://youtu.be/E4qXZv34NQQ?t=1220
+        # Prefer Neovim 0.12 built-in incremental selection: Visual `an` / `in`
+        # (treesitter nodes; also LSP selectionRange where the server supports it).
+        # Do not re-enable nvim-treesitter incrementalSelection mappings.
+        # https://neovim.io/doc/user/news-0.12.html
         mappings = {
           # incrementalSelection = {
           #   init = "<Enter>";

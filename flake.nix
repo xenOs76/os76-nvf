@@ -13,11 +13,9 @@
 
     nvf = {
       #url = "github:NotAShelf/nvf/v0.8";
-      url = "github:NotAShelf/nvf/0b92b1783de48499303fc6e61478da34ee124482";
+      url = "github:NotAShelf/nvf/07d5eb208b8f16306b10342b634da7e07e926fa5"; # 2026-07-24
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixpkgs-terraform.url = "github:stackbuilders/nixpkgs-terraform";
 
     gitlineage-nvim = {
       # url = "github:LionyxML/gitlineage.nvim";
@@ -30,13 +28,11 @@
     extra-substituters = [
       "https://cache.nixos.org"
       "https://nix-community.cachix.org"
-      "https://nixpkgs-terraform.cachix.org"
       "https://nvf.cachix.org"
     ];
     extra-trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "nixpkgs-terraform.cachix.org-1:8Sit092rIdAVENA3ZVeH9hzSiqI/jng6JiCrQ1Dmusw="
       "nvf.cachix.org-1:GMQWiUhZ6ux9D5CvFFMwnc2nFrUHTeGaXRlVBXo+naI="
     ];
   };
@@ -46,7 +42,6 @@
     nixpkgs,
     flake-utils,
     # home-manager,
-    nixpkgs-terraform,
     nvf,
     ...
   } @ inputs:
@@ -60,8 +55,6 @@
         gitlineage-repo = inputs.gitlineage-nvim;
 
         os76NvfCfg = {
-          # https://github.com/stackbuilders/nixpkgs-terraform/blob/main/versions.json
-          terraformVersion = "1.14";
           terraformAutoformat = true;
           yamlAutoformat = true;
         };
@@ -85,7 +78,6 @@
             ./modules/nvim/ide/default.nix
           ];
           extraSpecialArgs = {
-            inherit nixpkgs-terraform;
             inherit gitlineage-repo;
           };
         };
