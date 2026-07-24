@@ -343,10 +343,10 @@
                     end
                     if vim.fs.normalize(issue_path) == buf_abs then
                       table.insert(diagnostics, {
-                        lnum = assert(tonumber(issue.range.start.line)),
-                        end_lnum = assert(tonumber(issue.range["end"].line)),
-                        col = assert(tonumber(issue.range.start.column)),
-                        end_col = assert(tonumber(issue.range["end"].column)),
+                        lnum = assert(tonumber(issue.range.start.line)) - 1,
+                        end_lnum = assert(tonumber(issue.range["end"].line)) - 1,
+                        col = assert(tonumber(issue.range.start.column)) - 1,
+                        end_col = assert(tonumber(issue.range["end"].column)) - 1,
                         severity = severity_map[issue.rule.severity],
                         source = "tflint",
                         message = string.format(
