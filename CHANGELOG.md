@@ -1,3 +1,14 @@
+## 0.0.19 (2026-08-22)
+
+### Feat
+
+    Added OpenTofu language support, including file detection, validation, linting, and language-server integration.
+    Enabled Terraform and OpenTofu validation diagnostics, including issues spanning multiple files.
+    Enabled signature help for completion suggestions.
+    Updated Nix formatting to use nixfmt.
+    Improved Docker language-server configuration.
+    Updated Terraform language-server handling for more reliable defaults.
+
 ## 0.0.18 (2026-07-24)
 
 ### Feat
