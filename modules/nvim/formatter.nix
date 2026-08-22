@@ -14,8 +14,8 @@
         markdownlint-cli2 = {
           command = "${lib.getExe markdownlint-cli2}";
         };
-        alejandra = {
-          command = "${lib.getExe alejandra}";
+        nixfmt = {
+          command = "${lib.getExe nixfmt}";
         };
         fixjson = {
           command = "${lib.getExe fixjson}";
@@ -32,7 +32,7 @@
       };
 
       formatters_by_ft = {
-        nix = ["alejandra"];
+        nix = ["nixfmt"];
         sh = ["shfmt"];
         json = ["fixjson"];
         # yaml = ["yamlfmt"]; # minimal only

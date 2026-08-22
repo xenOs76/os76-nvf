@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgsUnstable,
   lib,
   config,
   ...
@@ -19,13 +20,23 @@
     #   };
     # };
 
-    # Keep terraform-ls (not tofu-ls); point CLI path at OpenTofu.
+    # Disable leftover HashiCorp LS so only tofu-ls attaches.
     # https://github.com/hashicorp/terraform-ls/blob/main/docs/SETTINGS.md
-    terraform-ls = {
+    terraform-ls.enable = false;
+
+    # validateOnSave must be init_options (initialize), not settings —
+    # tofu-ls ignores workspace/didChangeConfiguration like terraform-ls.
+    # NOTE: tofu-ls ≤0.5.3 (and current main) stubs OpTypeTofuValidate
+    # (return nil //module.TofuValidate...), so this flag only arms the
+    # didSave path. Real diagnostics come from nvim-lint tofu_validate.
+    # https://github.com/opentofu/tofu-ls/blob/main/docs/SETTINGS.md
+    tofu-ls = {
+      cmd = lib.mkForce ["${lib.getExe pkgsUnstable.tofu-ls}" "serve"];
+      filetypes = ["terraform" "terraform-vars" "tf" "opentofu"];
+      root_markers = [".terraform" ".git"];
       init_options = {
-        terraform = {
-          path = lib.getExe pkgs.opentofu;
-        };
+        tofu.path = lib.getExe pkgs.opentofu;
+        experimentalFeatures.validateOnSave = true;
       };
     };
 
@@ -33,7 +44,7 @@
     # https://github.com/rcjsuen/dockerfile-language-server
     dockerls = {
       enable = true;
-      cmd = lib.mkForce ["${lib.getExe pkgs. dockerfile-language-server}" "--stdio"];
+      cmd = lib.mkForce ["${lib.getExe pkgs.dockerfile-language-server}" "--stdio"];
       filetypes = ["dockerfile"];
       rootMarkers = ["Dockerfile"];
       settings = {

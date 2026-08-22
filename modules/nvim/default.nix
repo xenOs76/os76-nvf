@@ -160,6 +160,7 @@
          vim.filetype.add({
            extension = {
              tfvars = "terraform-vars",
+             tofu = "opentofu",
            },
 
            -- filename = {
@@ -312,7 +313,10 @@
           # https://github.com/mfussenegger/nvim-lint?tab=readme-ov-file#available-linters
           linters_by_ft = {
             yaml = ["yamllint"];
-            terraform = ["tflint"];
+            # tofu-ls validateOnSave is stubbed upstream; tofu_validate fills the gap.
+            terraform = ["tflint" "tofu_validate"];
+            terraform-vars = ["tofu_validate"];
+            opentofu = ["tflint" "tofu_validate"];
             sh = ["shellcheck"];
             go = ["golangcilint"];
           };
@@ -362,6 +366,106 @@
                 end
               '';
             };
+            # Shell out to `tofu validate -json` — tofu-ls/terraform-ls validate is a no-op.
+            # Module-wide: errors in *other* .tf files still appear on the buffer you saved
+            # (prefixed with filename), matching CLI `tofu validate` visibility.
+            tofu_validate = {
+              cmd = lib.getExe pkgs.opentofu;
+              args = ["validate" "-json"];
+              append_fname = false;
+              stdin = false;
+              stream = "stdout";
+              ignore_exitcode = true;
+              parser = lib.generators.mkLuaInline ''
+                function(output, bufnr, linter_cwd)
+                  local severity_map = {
+                    warning = vim.diagnostic.severity.WARN,
+                    error = vim.diagnostic.severity.ERROR,
+                    notice = vim.diagnostic.severity.INFO,
+                  }
+                  local ok, decoded = pcall(vim.json.decode, output)
+                  if not ok or type(decoded) ~= "table" then
+                    return {}
+                  end
+
+                  local buf_abs = vim.fs.normalize(vim.api.nvim_buf_get_name(bufnr))
+                  local buf_name = vim.fn.fnamemodify(buf_abs, ":t")
+                  local cwd = linter_cwd or vim.fn.getcwd()
+                  local current = {}
+                  local by_abs = {}
+
+                  local function abs_path(rel)
+                    if vim.startswith(rel, "/") then
+                      return vim.fs.normalize(rel)
+                    end
+                    return vim.fs.normalize(vim.fs.joinpath(cwd, rel))
+                  end
+
+                  for _, d in ipairs(decoded.diagnostics or {}) do
+                    local message = d.summary or "validate error"
+                    if d.detail and d.detail ~= "" then
+                      message = message .. " — " .. d.detail
+                    end
+                    local severity = severity_map[d.severity] or vim.diagnostic.severity.ERROR
+
+                    if d.range == nil then
+                      table.insert(current, {
+                        lnum = 0,
+                        col = 0,
+                        severity = severity,
+                        source = "tofu validate",
+                        message = message,
+                      })
+                    else
+                      local issue_abs = abs_path(d.range.filename)
+                      local issue_name = vim.fn.fnamemodify(issue_abs, ":t")
+                      local diag = {
+                        lnum = assert(tonumber(d.range.start.line)) - 1,
+                        end_lnum = assert(tonumber(d.range["end"].line)) - 1,
+                        col = assert(tonumber(d.range.start.column)) - 1,
+                        end_col = assert(tonumber(d.range["end"].column)) - 1,
+                        severity = severity,
+                        source = "tofu validate",
+                        message = message,
+                      }
+                      local on_current = issue_abs == buf_abs or issue_name == buf_name
+                      if on_current then
+                        table.insert(current, diag)
+                      else
+                        table.insert(current, {
+                          lnum = 0,
+                          col = 0,
+                          severity = severity,
+                          source = "tofu validate",
+                          message = string.format(
+                            "[%s:%d] %s",
+                            issue_name,
+                            diag.lnum + 1,
+                            message
+                          ),
+                        })
+                        by_abs[issue_abs] = by_abs[issue_abs] or {}
+                        table.insert(by_abs[issue_abs], diag)
+                      end
+                    end
+                  end
+
+                  -- Mirror into other loaded buffers so navigating there keeps locations.
+                  local ns = require("lint").get_namespace("tofu_validate")
+                  for _, b in ipairs(vim.api.nvim_list_bufs()) do
+                    if b ~= bufnr and vim.api.nvim_buf_is_loaded(b) then
+                      local name = vim.api.nvim_buf_get_name(b)
+                      if name ~= "" then
+                        local other = by_abs[vim.fs.normalize(name)]
+                        vim.diagnostic.set(ns, b, other or {})
+                      end
+                    end
+                  end
+
+                  return current
+                end
+              '';
+            };
             yamllint = {
               cmd = lib.getExe pkgs.yamllint;
             };
@@ -369,7 +473,7 @@
               cmd = lib.getExe pkgs.shellcheck;
             };
           };
-          # tflint: cwd = buffer dir so nested modules work without --recursive
+          # tflint / tofu_validate: cwd = buffer dir (module under edit)
           lint_function = lib.generators.mkLuaInline ''
             function(buf)
               local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
@@ -386,7 +490,7 @@
                 linter.name = linter.name or name
 
                 local opts = {}
-                if name == "tflint" then
+                if name == "tflint" or name == "tofu_validate" then
                   local path = vim.api.nvim_buf_get_name(buf)
                   if path ~= "" then
                     opts.cwd = vim.fn.fnamemodify(path, ":h")

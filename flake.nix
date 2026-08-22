@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
+    nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
     flake-utils.url = "github:numtide/flake-utils";
 
     # home-manager = {
@@ -40,6 +42,7 @@
   outputs = {
     # self,
     nixpkgs,
+    nixpkgsUnstable,
     flake-utils,
     # home-manager,
     nvf,
@@ -49,7 +52,10 @@
       system: let
         pkgs = import nixpkgs {
           inherit system;
-          config.allowUnfree = true;
+        };
+
+        pkgsUnstable = import nixpkgsUnstable {
+          inherit system;
         };
 
         gitlineage-repo = inputs.gitlineage-nvim;
@@ -79,6 +85,7 @@
           ];
           extraSpecialArgs = {
             inherit gitlineage-repo;
+            inherit pkgsUnstable;
           };
         };
       in {

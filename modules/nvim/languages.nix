@@ -5,7 +5,10 @@
 
   nix = {
     enable = true;
-    format.enable = true;
+    format = {
+      enable = true;
+      type = ["nixfmt"];
+    };
     treesitter.enable = true;
     extraDiagnostics.enable = true;
     lsp = {
