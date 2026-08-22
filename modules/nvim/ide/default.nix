@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgsUnstable,
   config,
   lib,
   ...
@@ -47,6 +48,7 @@ in {
               ghost_text = {enabled = true;};
             };
           };
+          signature.enabled = true;
         };
 
         sourcePlugins = {
@@ -155,7 +157,6 @@ in {
         treesitter.enable = true;
         lsp = {
           enable = true;
-          servers = ["terraform-ls"]; # override NVF default tofu-ls
         };
         format = {
           enable = true;
@@ -166,6 +167,7 @@ in {
 
     lsp = import ./lsp.nix {
       inherit pkgs;
+      inherit pkgsUnstable;
       inherit lib;
       inherit config;
     };

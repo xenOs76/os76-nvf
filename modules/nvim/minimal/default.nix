@@ -30,7 +30,9 @@
         enable = true;
         # https://github.com/mfussenegger/nvim-lint?tab=readme-ov-file#available-linters
         linters_by_ft = {
-          terraform = ["tflint"];
+          terraform = ["tflint" "tofu_validate"];
+          terraform-vars = ["tofu_validate"];
+          opentofu = ["tflint" "tofu_validate"];
           go = ["golangcilint"];
           python = ["ruff"];
         };
@@ -40,6 +42,10 @@
           };
           tflint = {
             cmd = lib.getExe pkgs.tflint;
+          };
+          # Defined fully in shared modules/nvim/default.nix; ensure cmd exists if merge order differs.
+          tofu_validate = {
+            cmd = lib.getExe pkgs.opentofu;
           };
           ruff = {
             cmd = lib.getExe pkgs.ruff;
